@@ -74,9 +74,9 @@ public class JsonUtils {
         return branchRRTStatus.getJSONArray(dataKey);
     }
 
-    public static List<Transaction> getTargetBranchData(List<String> branchWhiteList, JSONArray datas) {
+    public static List<Transaction> getTargetBranchData(JSONArray datas) {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        if (null == branchWhiteList || branchWhiteList.isEmpty() || null == datas)
+        if (null == datas)
         {
             return transactions;
         }
@@ -84,7 +84,7 @@ public class JsonUtils {
         {
             JSONObject branchData = (JSONObject)datas.get(index);
             String branchName = branchData.getString(Const.BRANCH_DATA_KEY_NAME);
-            if (branchWhiteList.contains(branchName))
+            if (Const.BRANCH_WHITE_LIST.equals(branchName))
             {
                 Transaction targetTransaction = new Transaction(branchData.getString(Const.BRANCH_DATA_KEY_NAME),
                         branchData.getString(Const.BRANCH_DATA_KEY_STATUS), branchData.getString(Const.BRANCH_DATA_KEY_SERVICE_TYPE),

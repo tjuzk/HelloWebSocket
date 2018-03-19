@@ -2,6 +2,8 @@ package com.websocket.ciny.constant;
 
 public class Const {
 
+    public static final String BRANCH_WHITE_LIST = "澳门";
+
     public static final String RRT_VIEW_KEY_BRANCH = "branchRRTStatus";
 
     public static final String RRT_VIEW_KEY_BRANCH_DATA = "data";

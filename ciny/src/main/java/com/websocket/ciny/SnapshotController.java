@@ -2,6 +2,7 @@ package com.websocket.ciny;
 
 import com.websocket.ciny.task.ScheduledSnapshotTask;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -15,10 +16,14 @@ public class SnapshotController {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+    @Value("${conf.srcFilePath}")
+    private String srcFilePath;
+
     @Scheduled(fixedRate = 1000)
     @SendTo("/topic/snapshot")
     public Object rrtViewSnapshot() throws Exception {
-        messagingTemplate.convertAndSend("/topic/snapshot", ScheduledSnapshotTask.getInstance().snapshot());
+        messagingTemplate.convertAndSend("/topic/snapshot",
+                ScheduledSnapshotTask.getInstance().snapshot(this.srcFilePath));
         return "snapshot";
     }
 }

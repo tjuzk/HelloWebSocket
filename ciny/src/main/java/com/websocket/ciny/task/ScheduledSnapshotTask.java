@@ -1,21 +1,20 @@
 package com.websocket.ciny.task;
 
-import com.websocket.ciny.conf.ServiceConfig;
 import com.websocket.ciny.constant.Const;
 import com.websocket.ciny.model.Transaction;
 import com.websocket.ciny.util.JsonUtils;
 import org.json.JSONArray;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+@RestController
 public class ScheduledSnapshotTask {
 
     private ScheduledSnapshotTask(){}
 
-    @Autowired
-    private ServiceConfig config;
+    private Set<String> branchWhiteList = null;
 
     /**
      * @Author: John
@@ -37,11 +36,7 @@ public class ScheduledSnapshotTask {
         }
     }
 
-    public List<Transaction> snapshot(){
-        // 0. Get file.
-//        String filePath = config.getSrcFilePath();
-        String filePath = "\\\\127.0.0.1\\data\\json_rrtView_28951.txt";
-
+    public List<Transaction> snapshot(String filePath){
         // 1. Convert txt content to json object.
         String fileContent = JsonUtils.getFileContent(filePath);
         if (null == fileContent)
@@ -50,16 +45,14 @@ public class ScheduledSnapshotTask {
         }
 
         // 2. Parse json to get target branch data.
-        JSONArray branchDatas = JsonUtils.parseBranchData(Const.RRT_VIEW_KEY_BRANCH, Const.RRT_VIEW_KEY_BRANCH_DATA, fileContent);
+        JSONArray branchDatas = JsonUtils.parseBranchData(Const.RRT_VIEW_KEY_BRANCH,
+                Const.RRT_VIEW_KEY_BRANCH_DATA, fileContent);
         if (null == branchDatas)
         {
             return null;
         }
 
         // 3. Return transactions.
-//        List<String> branchWhiteList = config.getBranchWhiteList();
-        List<String> branchWhiteList = new ArrayList<>();
-        branchWhiteList.add("澳门");
-        return JsonUtils.getTargetBranchData(branchWhiteList, branchDatas);
+        return JsonUtils.getTargetBranchData(branchDatas);
     }
 }
