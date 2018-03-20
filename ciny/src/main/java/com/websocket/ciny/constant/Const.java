@@ -2,7 +2,9 @@ package com.websocket.ciny.constant;
 
 public class Const {
 
-    public static final String BRANCH_WHITE_LIST = "澳门";
+    public static final double NULL_TIME_RESPONSE = -1.0;
+
+    public static final String BRANCH_WHITE_LIST_MOCK = "澳门";
 
     public static final String RRT_VIEW_KEY_BRANCH = "branchRRTStatus";
 

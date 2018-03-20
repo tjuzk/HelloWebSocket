@@ -3,6 +3,7 @@ package com.websocket.ciny.util;
 import com.websocket.ciny.constant.Const;
 import com.websocket.ciny.model.Transaction;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -14,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class JsonUtils {
 
@@ -74,38 +76,43 @@ public class JsonUtils {
         return branchRRTStatus.getJSONArray(dataKey);
     }
 
-    public static List<Transaction> getTargetBranchData(JSONArray datas) {
+    public static List<Transaction> getTargetBranchData(Set<String> branchWhiteList, JSONArray datas) {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        if (null == datas)
-        {
-            return transactions;
-        }
         for (int index = 0; index < datas.length(); index++)
         {
             JSONObject branchData = (JSONObject)datas.get(index);
             String branchName = branchData.getString(Const.BRANCH_DATA_KEY_NAME);
-            if (Const.BRANCH_WHITE_LIST.equals(branchName))
+            Transaction targetTransaction;
+            if (branchWhiteList.contains(branchName))
             {
-                Transaction targetTransaction = new Transaction(branchData.getString(Const.BRANCH_DATA_KEY_NAME),
-                        branchData.getString(Const.BRANCH_DATA_KEY_STATUS), branchData.getString(Const.BRANCH_DATA_KEY_SERVICE_TYPE),
-                        branchData.getDouble(Const.BRANCH_DATA_KEY_SERVICE_STATUS), branchData.getDouble(Const.BRANCH_DATA_KEY_CLIENT_TIME),
-                        branchData.getString(Const.BRANCH_DATA_KEY_CLIENT_STATUS), branchData.getDouble(Const.BRANCH_DATA_KEY_NETWORK_TIME),
-                        branchData.getString(Const.BRANCH_DATA_KEY_NETWORK_STATUS), branchData.getDouble(Const.BRANCH_DATA_KEY_SYS_PROC_TIME),
-                        branchData.getString(Const.BRANCH_DATA_KEY_SYS_STATUS), branchData.getDouble(Const.BRANCH_DATA_KEY_TRANSACTION_TIME),
-                        branchData.getString(Const.BRANCH_DATA_KEY_TRANSACTION_STATUS));
-                transactions.add(targetTransaction);
+                try
+                {
+                    targetTransaction = new Transaction(branchData.getString(Const.BRANCH_DATA_KEY_NAME),
+                            branchData.getString(Const.BRANCH_DATA_KEY_STATUS), branchData.getString(Const.BRANCH_DATA_KEY_SERVICE_TYPE),
+                            branchData.getDouble(Const.BRANCH_DATA_KEY_SERVICE_STATUS), getTimeValue(branchData, Const.BRANCH_DATA_KEY_CLIENT_TIME),
+                            branchData.getString(Const.BRANCH_DATA_KEY_CLIENT_STATUS), getTimeValue(branchData, Const.BRANCH_DATA_KEY_NETWORK_TIME),
+                            branchData.getString(Const.BRANCH_DATA_KEY_NETWORK_STATUS), getTimeValue(branchData, Const.BRANCH_DATA_KEY_SYS_PROC_TIME),
+                            branchData.getString(Const.BRANCH_DATA_KEY_SYS_STATUS), getTimeValue(branchData, Const.BRANCH_DATA_KEY_TRANSACTION_TIME),
+                            branchData.getString(Const.BRANCH_DATA_KEY_TRANSACTION_STATUS));
+                    transactions.add(targetTransaction);
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
         return transactions;
     }
 
-//    public static void main(String[] args) {
-//        String content = getFileContent("\\\\127.0.0.1\\data\\json_rrtView_28951.txt");
-//
-//        JSONArray datas = parseBranchData("branchRRTStatus", "data", content);
-//
-//        Set<String> list = new HashSet<>();
-//        list.add("澳门");
-//        List<Transaction> transactions = getTargetBranchData(list, datas);
-//    }
+    private static double getTimeValue(JSONObject parentObj, String childKey) {
+        if (parentObj.isNull(childKey))
+        {
+            return Const.NULL_TIME_RESPONSE;
+        }
+        else
+        {
+            return parentObj.getDouble(childKey);
+        }
+    }
 }

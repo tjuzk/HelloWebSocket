@@ -47,47 +47,95 @@ public class Transaction {
         return branchName;
     }
 
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
     public EnumStatus getBranchStatus() {
         return branchStatus;
+    }
+
+    public void setBranchStatus(EnumStatus branchStatus) {
+        this.branchStatus = branchStatus;
     }
 
     public String getServiceType() {
         return serviceType;
     }
 
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
     public double getServiceStatus() {
         return serviceStatus;
+    }
+
+    public void setServiceStatus(double serviceStatus) {
+        this.serviceStatus = serviceStatus;
     }
 
     public double getClientTime() {
         return clientTime;
     }
 
+    public void setClientTime(double clientTime) {
+        this.clientTime = clientTime;
+    }
+
     public EnumStatus getClientStatus() {
         return clientStatus;
+    }
+
+    public void setClientStatus(EnumStatus clientStatus) {
+        this.clientStatus = clientStatus;
     }
 
     public double getNetWorkTime() {
         return netWorkTime;
     }
 
+    public void setNetWorkTime(double netWorkTime) {
+        this.netWorkTime = netWorkTime;
+    }
+
     public EnumStatus getNetworkStatus() {
         return networkStatus;
+    }
+
+    public void setNetworkStatus(EnumStatus networkStatus) {
+        this.networkStatus = networkStatus;
     }
 
     public double getSysProcTime() {
         return sysProcTime;
     }
 
+    public void setSysProcTime(double sysProcTime) {
+        this.sysProcTime = sysProcTime;
+    }
+
     public EnumStatus getSysProcStatus() {
         return sysProcStatus;
+    }
+
+    public void setSysProcStatus(EnumStatus sysProcStatus) {
+        this.sysProcStatus = sysProcStatus;
     }
 
     public double getTransactionTime() {
         return transactionTime;
     }
 
+    public void setTransactionTime(double transactionTime) {
+        this.transactionTime = transactionTime;
+    }
+
     public EnumStatus getTransactionStatus() {
         return transactionStatus;
+    }
+
+    public void setTransactionStatus(EnumStatus transactionStatus) {
+        this.transactionStatus = transactionStatus;
     }
 }
